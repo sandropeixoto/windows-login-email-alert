@@ -10,8 +10,17 @@ import logging
 import cv2
 
 # ---------------------------------------------------------------------------
-# Configuração — preencha aqui ou defina como variáveis de ambiente
+# Configuração — preencha aqui, defina como variáveis de ambiente ou use .env
 # ---------------------------------------------------------------------------
+_env_file = os.path.join(os.path.dirname(__file__), ".env")
+if os.path.isfile(_env_file):
+    with open(_env_file, "r", encoding="utf-8") as _f:
+        for _line in _f:
+            _line = _line.strip()
+            if _line and not _line.startswith("#") and "=" in _line:
+                _k, _v = _line.split("=", 1)
+                os.environ.setdefault(_k.strip(), _v.strip().strip('"').strip("'"))
+
 RESEND_API_KEY = os.getenv("RESEND_API_KEY", "re_SUACHAVE_AQUI")
 FROM_EMAIL     = os.getenv("ALERT_FROM", "alerta@seudominio.com")
 TO_EMAIL       = os.getenv("ALERT_TO",   "voce@email.com")
